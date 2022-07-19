@@ -26,14 +26,17 @@ class EmailAdapter(): RecyclerView.Adapter<EmailAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val emailViewModel = mEmailList!![position]
-        when (emailViewModel.priorityIndicator) {
-            0 -> holder.description.text = emailViewModel.emailShortDesc
-            1 -> holder.description.text = "*" + emailViewModel.emailShortDesc
+        with (emailViewModel) {
+            when (priorityIndicator) {
+                false-> holder.description.text = emailShortDesc
+                true -> holder.description.text = "* ${emailShortDesc}"
+            }
+            when (readIndicator) {
+                false -> holder.description.setTypeface(Typeface.DEFAULT_BOLD)
+            }
+            holder.time.text = fromDate
         }
-        when (emailViewModel.readIndicator) {
-            0 -> holder.description.setTypeface(Typeface.DEFAULT_BOLD)
-        }
-        holder.time.text = emailViewModel.fromDate
+
 
     }
 

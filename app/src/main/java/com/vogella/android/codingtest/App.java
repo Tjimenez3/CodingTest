@@ -16,6 +16,9 @@ public class App extends Application {
         }
     }
     public static ApiRequest getApi() {
+        if(mainApi == null) {
+            mainApi = new Api(UrlConstant.BASE_URL).provideApiCall();
+        }
         return mainApi;
     }
 }

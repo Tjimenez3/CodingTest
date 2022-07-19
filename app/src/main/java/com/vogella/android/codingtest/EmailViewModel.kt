@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.vogella.android.codingtest.ui.main.EmailModel
 import kotlinx.coroutines.launch
 
-class EmailViewModel: ViewModel() {
+class EmailViewModel(private val api: ApiRequest): ViewModel() {
 
     private val _responseEmailItems : MutableLiveData<List<EmailModel>> = MutableLiveData()
     val responseNewsItems : LiveData<List<EmailModel>>
@@ -17,7 +17,7 @@ class EmailViewModel: ViewModel() {
 
 
 
-    suspend fun makeApiRequest(api: ApiRequest){
+    fun makeApiRequest(){
         viewModelScope.launch {
             runCatching {
                 api.getEmails()
@@ -30,8 +30,7 @@ class EmailViewModel: ViewModel() {
     }
     private fun processWithNewsResponse(newsResponse: List<EmailModel>?) {
         var sortedEmailResponse = newsResponse?.filter {
-            it.emailShortDesc.isNotEmpty()
-
+            it.emailShortDesc.isNullOrEmpty() == false
         }?.sortedBy {
             it.fromDate
         }
@@ -40,6 +39,7 @@ class EmailViewModel: ViewModel() {
     }
 
     private fun processWithError(t: Throwable) {
+        println("ERROR")
         //error
     }
 }
